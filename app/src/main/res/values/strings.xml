@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">TileSurvivor</string>
+    <string name="tile_survivor">Tile Survivor</string>
+    <string name="start">Start</string>
+</resources>
