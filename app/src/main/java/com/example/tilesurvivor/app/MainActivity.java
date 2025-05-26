@@ -1,14 +1,12 @@
-package com.example.tilesurvivor;
+package com.example.tilesurvivor.app;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+
+import com.example.tilesurvivor.R;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -19,7 +17,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onBtnStartGame(View view) {
-        Intent intent = new Intent(this, GameActivity.class);
+        startGame(1);
+    }
+
+    private void startGame(int stage) {
+        Intent intent = new Intent(this, TileSurvivorActivity.class);
         startActivity(intent);
     }
 }

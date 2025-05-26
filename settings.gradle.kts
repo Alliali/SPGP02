@@ -21,4 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "TileSurvivor"
 include(":app")
- 
+include("a2dg")
