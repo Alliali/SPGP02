@@ -2,33 +2,55 @@ package kr.ac.tukorea.ge.spgp2025.a2dg.framework.view;
 
 import android.graphics.Canvas;
 import android.graphics.Matrix;
+import android.graphics.RectF;
 
 public class Camera {
+    private final RectF worldRect = new RectF();
     private static final Matrix matrix = new Matrix();
-    private static final Matrix inverse = new Matrix();
-    private static float centerX, centerY;
+    private final Matrix inverseMatrix = new Matrix();
+    private final float[] temp = new float[2];
+    private float viewWidth, viewHeight;
+    private float scale = 1.0f;
 
-    public static void setCenter(float x, float y) {
-        centerX = x;
-        centerY = y;
-        updateMatrix();
+    private static final Camera instance = new Camera();
+    public static Camera getInstance() {
+        return instance;
     }
 
-    public static void updateMatrix() {
+    private Camera() {}
+
+    public void setViewSize(float viewWidth, float viewHeight) {
+        this.viewWidth = viewWidth;
+        this.viewHeight = viewHeight;
+    }
+
+    public void setWorldSize(float width, float height) {
+        worldRect.set(0, 0, width, height);
+    }
+
+    public void lookAt(float targetX, float targetY) {
+        float left = targetX - viewWidth / 2 /scale;
+        float top = targetY - viewHeight / 2 /scale;
+
+//        left = Math.max(worldRect.left, Math.min(left, worldRect.right - viewWidth / scale));
+//        top = Math.max(worldRect.top, Math.min(top, worldRect.bottom - viewHeight / scale));
+
         matrix.reset();
-        matrix.postTranslate(-centerX + Metrics.width / 2, -centerY + Metrics.height / 2);
-        matrix.invert(inverse);
+        matrix.postScale(scale, scale);
+        matrix.postTranslate(-left * scale, -top * scale);
+        matrix.invert(inverseMatrix);
     }
 
-    public static float getCenterX() {
-        return centerX;
+    public void setScale(float scale) {
+        this.scale = scale;
     }
-
-    public static float getCenterY() {
-        return centerY;
-    }
-
     public static void apply(Canvas canvas) {
         canvas.concat(matrix);
+    }
+    public float[] screenToWorld(float x, float y) {
+        temp[0] = x;
+        temp[1] = y;
+        inverseMatrix.mapPoints(temp);
+        return temp;
     }
 }

@@ -54,9 +54,14 @@ public class Sprite implements IGameObject {
     public float getWidth() {
         return width;
     }
-
     public float getHeight() {
         return height;
+    }
+    public float getX() {
+        return x;
+    }
+    public float getY() {
+        return y;
     }
     public float getPropotionalHeight(float width) {
         return width / bitmap.getWidth() * bitmap.getHeight();
@@ -72,6 +77,7 @@ public class Sprite implements IGameObject {
 
     @Override
     public void draw(Canvas canvas) {
+        RectUtil.setRect(dstRect, x, y, width, height);
         canvas.drawBitmap(bitmap, srcRect, dstRect, null);
     }
 

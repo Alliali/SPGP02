@@ -1,21 +1,19 @@
 package com.example.tilesurvivor.game;
 
 import android.graphics.Rect;
+import android.util.Log;
 import android.view.MotionEvent;
 
 import com.example.tilesurvivor.R;
 
 import kr.ac.tukorea.ge.spgp2025.a2dg.framework.objects.SheetSprite;
 import kr.ac.tukorea.ge.spgp2025.a2dg.framework.objects.Sprite;
+import kr.ac.tukorea.ge.spgp2025.a2dg.framework.util.RectUtil;
 import kr.ac.tukorea.ge.spgp2025.a2dg.framework.view.Camera;
 import kr.ac.tukorea.ge.spgp2025.a2dg.framework.view.Metrics;
 
 public class Player extends SheetSprite {
-
-    private float worldX, worldY;
-
-    public float getX() { return x; }
-    public float getY() { return y; }
+    private static final String TAG = Player.class.getSimpleName();
 
     public enum State {
         idle, move, attack
@@ -31,9 +29,10 @@ public class Player extends SheetSprite {
     };
     public Player() {
         super(R.mipmap.chesspieces2, 8);
-        this.x = 1000f;
-        this.y = 1000f;
-        setPosition(Metrics.width / 2 , Metrics.height / 2, 200, 200);
+//        x = 1000.0f;
+//        y = 1000.0f;
+        setPosition(x , y, 100, 100);
+        Log.d(TAG, "이게 X = " + x + " 이게 Y = " + y);
         srcRects = srcRectsArray[state.ordinal()];
     }
 
@@ -42,17 +41,25 @@ public class Player extends SheetSprite {
     }
     public void move() {
         if (state == State.idle) {
-            Camera.setCenter(Camera.getCenterX() + 10, Camera.getCenterY());
+            //x += 30f;
             setState(State.move);
         } else {
             setState(State.idle);
         }
+        //setPosition(x, y, 100, 100);
         srcRects = srcRectsArray[state.ordinal()];
     }
-    public boolean onTouch(MotionEvent event) {
-        if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            move();
-        }
-        return false;
+
+    @Override
+    public void update() {
+        RectUtil.setRect(dstRect, x, y, width, height);
+    }
+    public boolean onTouch(float targetX, float targetY) {
+        //if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            //move();
+            x = targetX;
+            y = targetY;
+        //}
+        return true;
     }
 }
