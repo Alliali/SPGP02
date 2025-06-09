@@ -19,7 +19,7 @@ public class MainScene extends Scene {
     private final Sprite background;
 
     public enum Layer {
-        bg, player, controller;
+        bg, player, ui, controller;
         public static final int COUNT = values().length;
     }
     public MainScene() {
@@ -37,13 +37,18 @@ public class MainScene extends Scene {
         player = new Player();
         player.setPosition(960, 960, 100, 100);
         add(Layer.player, player);
+
+        add(Layer.ui, new Sprite(R.mipmap.btn_left, 200f, 1400f, 150f, 75f));
+        add(Layer.ui, new Sprite(R.mipmap.btn_right, 400f, 1400f, 150f, 75f));
+        add(Layer.ui, new Sprite(R.mipmap.btn_up, 300f, 1300f, 75f, 150f));
+        add(Layer.ui, new Sprite(R.mipmap.btn_down, 300f, 1500f, 75f, 150f));
+
         //add(Layer.controller, new MapLoader(this));
     }
 
     @Override
     public void update() {
         super.update();
-        //Log.d(TAG, "player x = " + player.getX() + " player y = " + player.getY());
         Camera.getInstance().lookAt(player.getX(), player.getY());
     }
 
@@ -57,8 +62,6 @@ public class MainScene extends Scene {
     public boolean onTouchEvent(MotionEvent event) {
         float[] world = Camera.getInstance().screenToWorld(event.getX(), event.getY());
         player.onTouch(world[0], world[1]);
-        Log.d(TAG, "scrx = " + event.getY() + " scry = " + event.getY());
-        Log.d(TAG, "x = " + world[0] + "y = " + world[1]);
         return true;
     }
 }
