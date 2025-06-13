@@ -8,6 +8,7 @@ import com.example.tilesurvivor.R;
 
 import kr.ac.tukorea.ge.spgp2025.a2dg.framework.objects.Button;
 import kr.ac.tukorea.ge.spgp2025.a2dg.framework.objects.HorzScrollBackground;
+import kr.ac.tukorea.ge.spgp2025.a2dg.framework.objects.ScrollBackground;
 import kr.ac.tukorea.ge.spgp2025.a2dg.framework.objects.Sprite;
 import kr.ac.tukorea.ge.spgp2025.a2dg.framework.scene.Scene;
 import kr.ac.tukorea.ge.spgp2025.a2dg.framework.view.Camera;
@@ -17,7 +18,7 @@ public class MainScene extends Scene {
 
     private static final String TAG = Player.class.getSimpleName();
     private final Player player;
-    private final Sprite background;
+    private final ScrollBackground bg;
 
     public enum Layer {
         bg, player, ui, touch, controller;
@@ -29,11 +30,10 @@ public class MainScene extends Scene {
         Camera camera = Camera.getInstance();
         camera.setViewSize(Metrics.width, Metrics.height);
         camera.setWorldSize(1920, 1920);
-        //camera.setScale(2.0f);
+        
+        bg = new ScrollBackground(R.mipmap.tilemap);
+        add(Layer.bg, bg);
 
-        background = new Sprite(R.mipmap.tilemap);
-        background.setPosition(1920 / 2f, 1920 / 2f, 1920, 1920);
-        add(Layer.bg, background);
 
         player = new Player();
         player.setPosition(450, 800, 100, 100);
@@ -42,6 +42,7 @@ public class MainScene extends Scene {
         add(Layer.touch, new Button(R.mipmap.btn_left, 200f, 1400f, 150f, 75f, new Button.OnTouchListener() {
             @Override
             public boolean onTouch(boolean pressed) {
+                bg.move(-64,0);
                 Log.d(TAG, "Button: left - pressed:" + pressed);
                 return false;
             }
@@ -49,6 +50,7 @@ public class MainScene extends Scene {
         add(Layer.touch, new Button(R.mipmap.btn_right, 400f, 1400f, 150f, 75f, new Button.OnTouchListener() {
             @Override
             public boolean onTouch(boolean pressed) {
+                bg.move(64,0);
                 Log.d(TAG, "Button: right - pressed:" + pressed);
                 return false;
             }
@@ -56,6 +58,7 @@ public class MainScene extends Scene {
         add(Layer.touch, new Button(R.mipmap.btn_up, 300f, 1300f, 75f, 150f, new Button.OnTouchListener() {
             @Override
             public boolean onTouch(boolean pressed) {
+                bg.move(0,-64);
                 Log.d(TAG, "Button: up - pressed:" + pressed);
                 return false;
             }
@@ -63,6 +66,7 @@ public class MainScene extends Scene {
         add(Layer.touch, new Button(R.mipmap.btn_down, 300f, 1500f, 75f, 150f, new Button.OnTouchListener() {
             @Override
             public boolean onTouch(boolean pressed) {
+                bg.move(0,64);
                 Log.d(TAG, "Button: down - pressed:" + pressed);
                 return false;
             }
