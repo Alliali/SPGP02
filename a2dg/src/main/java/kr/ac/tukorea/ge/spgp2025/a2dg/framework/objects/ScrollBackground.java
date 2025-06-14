@@ -4,12 +4,15 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.RectF;
 
+import kr.ac.tukorea.ge.spgp2025.a2dg.framework.view.GameView;
 import kr.ac.tukorea.ge.spgp2025.a2dg.framework.view.Metrics;
 
 public class ScrollBackground extends Sprite {
     private final Rect srcRect = new Rect();    // 원본 이미지에서 자를 부분
     private final RectF dstRect = new RectF();  // 화면에 그릴 위치
     private float scrollX = 410, scrollY = 170;
+    private float targetX = 410, targetY = 170;
+    private final float scrollSpeed = 300.0f;
 
     public ScrollBackground(int bitmapResId) {
         super(bitmapResId);
@@ -17,14 +20,29 @@ public class ScrollBackground extends Sprite {
     }
 
     public void move(float dx, float dy) {
-        scrollX += dx;
-        scrollY += dy;
+        targetX += dx;
+        targetY += dy;
 
         // 스크롤 범위 제한 (선택사항)
 //        if (scrollX < 0) scrollX = 0;
 //        if (scrollY < 0) scrollY = 0;
 //        if (scrollX > bitmap.getWidth() - Metrics.width) scrollX = bitmap.getWidth() - Metrics.width;
 //        if (scrollY > bitmap.getHeight() - Metrics.height) scrollY = bitmap.getHeight() - Metrics.height;
+    }
+
+    @Override
+    public void update() {
+        float dx = targetX - scrollX;
+        float dy = targetY - scrollY;
+
+        float dist = (float)Math.sqrt(dx * dx + dy * dy);
+        if (dist < 1.0f) return;
+
+        float moveDist = scrollSpeed * GameView.frameTime;
+        if (dist < moveDist) moveDist = dist;
+
+        scrollX += dx / dist * moveDist;
+        scrollY += dy / dist * moveDist;
     }
 
     @Override
