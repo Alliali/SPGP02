@@ -30,7 +30,7 @@ public class MainScene extends Scene {
         Camera camera = Camera.getInstance();
         camera.setViewSize(Metrics.width, Metrics.height);
         camera.setWorldSize(1920, 1920);
-        
+
         bg = new ScrollBackground(R.mipmap.tilemap);
         add(Layer.bg, bg);
 
@@ -43,7 +43,6 @@ public class MainScene extends Scene {
             @Override
             public boolean onTouch(boolean pressed) {
                 bg.move(-64,0);
-                Log.d(TAG, "Button: left - pressed:" + pressed);
                 return false;
             }
         }));
@@ -51,7 +50,6 @@ public class MainScene extends Scene {
             @Override
             public boolean onTouch(boolean pressed) {
                 bg.move(64,0);
-                Log.d(TAG, "Button: right - pressed:" + pressed);
                 return false;
             }
         }));
@@ -59,7 +57,6 @@ public class MainScene extends Scene {
             @Override
             public boolean onTouch(boolean pressed) {
                 bg.move(0,-64);
-                Log.d(TAG, "Button: up - pressed:" + pressed);
                 return false;
             }
         }));
@@ -67,7 +64,6 @@ public class MainScene extends Scene {
             @Override
             public boolean onTouch(boolean pressed) {
                 bg.move(0,64);
-                Log.d(TAG, "Button: down - pressed:" + pressed);
                 return false;
             }
         }));
