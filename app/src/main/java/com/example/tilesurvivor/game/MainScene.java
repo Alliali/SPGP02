@@ -88,10 +88,9 @@ public class MainScene extends Scene {
         Camera.apply(canvas);
     }
 
-//    @Override
-//    public boolean onTouchEvent(MotionEvent event) {
-//        float[] world = Camera.getInstance().screenToWorld(event.getX(), event.getY());
-//        player.onTouch(world[0], world[1]);
-//        return true;
-//    }
+    @Override
+    public boolean onBackPressed() {
+        new PauseScene().push();
+        return true;
+    }
 }
