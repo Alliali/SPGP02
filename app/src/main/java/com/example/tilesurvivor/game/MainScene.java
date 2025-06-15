@@ -19,6 +19,10 @@ public class MainScene extends Scene {
     private static final String TAG = Player.class.getSimpleName();
     private final Player player;
     private final ScrollBackground bg;
+    private float left = 180.0f;
+    private float right = 0.0f;
+    private float up = 90.0f;
+    private float down = 270.0f;
 
     public enum Layer {
         bg, player, ui, touch, Weapon, controller;
@@ -42,35 +46,41 @@ public class MainScene extends Scene {
         add(Layer.touch, new Button(R.mipmap.btn_left, 150f, 1400f, 150f, 75f, new Button.OnTouchListener() {
             @Override
             public boolean onTouch(boolean pressed) {
-                bg.direction(180.0f, true);
+                bg.direction(left, true);
                 return false;
             }
         }));
         add(Layer.touch, new Button(R.mipmap.btn_right, 350f, 1400f, 150f, 75f, new Button.OnTouchListener() {
             @Override
             public boolean onTouch(boolean pressed) {
-                bg.direction(0.0f, true);
+                bg.direction(right, true);
                 return false;
             }
         }));
         add(Layer.touch, new Button(R.mipmap.btn_up, 250f, 1300f, 75f, 150f, new Button.OnTouchListener() {
             @Override
             public boolean onTouch(boolean pressed) {
-                bg.direction(90.0f, true);
+                bg.direction(up, true);
                 return false;
             }
         }));
         add(Layer.touch, new Button(R.mipmap.btn_down, 250f, 1500f, 75f, 150f, new Button.OnTouchListener() {
             @Override
             public boolean onTouch(boolean pressed) {
-                bg.direction(270.0f, true);
+                bg.direction(down, true);
                 return false;
             }
         }));
-        add(Layer.touch, new Button(R.mipmap.chesspieces, 500f, 1400f, 150f, 75f, new Button.OnTouchListener() {
+        add(Layer.touch, new Button(R.mipmap.btn_move, 550f, 1400f, 150f, 150f, new Button.OnTouchListener() {
             @Override
             public boolean onTouch(boolean pressed) {
                 bg.checkMove(true);
+                return false;
+            }
+        }));
+        add(Layer.touch, new Button(R.mipmap.btn_attack, 750f, 1400f, 150f, 150f, new Button.OnTouchListener() {
+            @Override
+            public boolean onTouch(boolean pressed) {
                 return false;
             }
         }));
