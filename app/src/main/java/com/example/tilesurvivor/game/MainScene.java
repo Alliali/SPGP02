@@ -43,51 +43,30 @@ public class MainScene extends Scene {
         player.setPosition(450, 800, 100, 100);
         add(Layer.player, player);
 
-        add(Layer.touch, new Button(R.mipmap.btn_left, 150f, 1400f, 150f, 75f, new Button.OnTouchListener() {
-            @Override
-            public boolean onTouch(boolean pressed) {
-                bg.direction(left, true);
-                return false;
-            }
+        add(Layer.touch, new Button(R.mipmap.btn_left, 150f, 1400f, 150f, 75f, pressed -> {
+            player.setDirection(Player.Direction.LEFT);
+            return false;
         }));
-        add(Layer.touch, new Button(R.mipmap.btn_right, 350f, 1400f, 150f, 75f, new Button.OnTouchListener() {
-            @Override
-            public boolean onTouch(boolean pressed) {
-                bg.direction(right, true);
-                return false;
-            }
+        add(Layer.touch, new Button(R.mipmap.btn_right, 350f, 1400f, 150f, 75f, pressed -> {
+            player.setDirection(Player.Direction.RIGHT);
+            return false;
         }));
-        add(Layer.touch, new Button(R.mipmap.btn_up, 250f, 1300f, 75f, 150f, new Button.OnTouchListener() {
-            @Override
-            public boolean onTouch(boolean pressed) {
-                bg.direction(up, true);
-                return false;
-            }
+        add(Layer.touch, new Button(R.mipmap.btn_up, 250f, 1300f, 75f, 150f, pressed -> {
+            player.setDirection(Player.Direction.UP);
+            return false;
         }));
-        add(Layer.touch, new Button(R.mipmap.btn_down, 250f, 1500f, 75f, 150f, new Button.OnTouchListener() {
-            @Override
-            public boolean onTouch(boolean pressed) {
-                bg.direction(down, true);
-                return false;
-            }
+        add(Layer.touch, new Button(R.mipmap.btn_down, 250f, 1500f, 75f, 150f, pressed -> {
+            player.setDirection(Player.Direction.DOWN);
+            return false;
         }));
-        add(Layer.touch, new Button(R.mipmap.btn_move, 550f, 1400f, 150f, 150f, new Button.OnTouchListener() {
-            @Override
-            public boolean onTouch(boolean pressed) {
-                bg.checkMove(true);
-                return false;
-            }
+        add(Layer.touch, new Button(R.mipmap.btn_move, 550f, 1400f, 150f, 150f, pressed -> {
+            player.moveScroll(bg);
+            return false;
         }));
-        add(Layer.touch, new Button(R.mipmap.btn_attack, 750f, 1400f, 150f, 150f, new Button.OnTouchListener() {
-            @Override
-            public boolean onTouch(boolean pressed) {
-                return false;
-            }
-        }));
+        add(Layer.touch, new Button(R.mipmap.btn_attack, 750f, 1400f, 150f, 150f, pressed -> false));
 
         //add(Layer.controller, new MapLoader(this));
     }
-
 
     @Override
     protected int getTouchLayerIndex() {

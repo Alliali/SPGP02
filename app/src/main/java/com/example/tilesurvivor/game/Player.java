@@ -8,6 +8,7 @@ import android.view.MotionEvent;
 import com.example.tilesurvivor.R;
 
 import kr.ac.tukorea.ge.spgp2025.a2dg.framework.interfaces.IBoxCollidable;
+import kr.ac.tukorea.ge.spgp2025.a2dg.framework.objects.ScrollBackground;
 import kr.ac.tukorea.ge.spgp2025.a2dg.framework.objects.SheetSprite;
 import kr.ac.tukorea.ge.spgp2025.a2dg.framework.objects.Sprite;
 import kr.ac.tukorea.ge.spgp2025.a2dg.framework.scene.Scene;
@@ -28,9 +29,19 @@ public class Player extends SheetSprite implements IBoxCollidable {
         return collisionRect;
     }
 
+    public void setDirection(Direction direction) {
+        this.direction = direction;
+    }
+
+    public Direction getDirection() {
+        return direction;
+    }
+
     public enum State {
         idle, move, attack
     }
+    public enum Direction {LEFT, RIGHT, UP, DOWN}
+    private Direction direction = Direction.RIGHT;
     protected State state = State.idle;
     protected static Rect[][] srcRectsArray = {
             new Rect[] {
@@ -56,15 +67,23 @@ public class Player extends SheetSprite implements IBoxCollidable {
         this.state = state;
         updateCollisionRect();
     }
-    public void move() {
+    public void moveScroll(ScrollBackground scrollBackground) {
+        switch (direction) {
+            case LEFT: scrollBackground.move(-64, 0); break;
+            case RIGHT: scrollBackground.move(64, 0); break;
+            case UP: scrollBackground.move(0, -64); break;
+            case DOWN: scrollBackground.move(0, 64); break;
+        }
+/*
         if (state == State.idle) {
             //x += 30f;
             setState(State.move);
         } else {
             setState(State.idle);
         }
-        //setPosition(x, y, 100, 100);
-        srcRects = srcRectsArray[state.ordinal()];
+setPosition(x, y, 100, 100);
+srcRects = srcRectsArray[state.ordinal()];
+*/
     }
 
     @Override
@@ -89,13 +108,5 @@ public class Player extends SheetSprite implements IBoxCollidable {
                 dstRect.right - width * insets[2],
                 dstRect.bottom - height * insets[3]
         );
-    }
-    public boolean onTouch(float targetX, float targetY) {
-        //if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            //move();
-            x = targetX;
-            y = targetY;
-        //}
-        return true;
     }
 }

@@ -13,47 +13,12 @@ public class ScrollBackground extends Sprite {
     private float scrollX = 410, scrollY = 170;
     private float targetX = 410, targetY = 170;
     private final float scrollSpeed = 300.0f;
-    private boolean leftDirection = false;
-    private boolean rightDirection = false;
-    private boolean upDirection = false;
-    private boolean downDirection = false;
-    private boolean moveCheck = false;
-    private boolean attackCheck = false;
 
     public ScrollBackground(int bitmapResId) {
         super(bitmapResId);
         setPosition(bitmap.getWidth() / 2f, bitmap.getHeight() / 2f, bitmap.getWidth(), bitmap.getHeight());
     }
 
-    public void checkMove(boolean check) {
-        moveCheck = check;
-        if (leftDirection) move(-64, 0);
-        if (rightDirection) move(64, 0);
-        if (upDirection) move(0, -64);
-        if (downDirection) move(0, 64);
-        moveCheck = false;
-    }
-
-    public void checkAttack(boolean check) {
-        attackCheck = check;
-        attackCheck = false;
-    }
-
-    public void direction(float angle, boolean dir) {
-        if (angle == 180.0f) {
-            leftDirection = dir;
-            rightDirection = upDirection = downDirection = false;
-        } else if (angle == 0.0f) {
-            rightDirection = dir;
-            leftDirection = upDirection = downDirection = false;
-        } else if (angle == 90.0f) {
-            upDirection = dir;
-            leftDirection = rightDirection = downDirection = false;
-        } else if (angle == 270.0f) {
-            downDirection = dir;
-            leftDirection = rightDirection = upDirection = false;
-        }
-    }
     public void move(float dx, float dy) {
         targetX += dx;
         targetY += dy;
