@@ -10,14 +10,19 @@ import com.example.tilesurvivor.R;
 import kr.ac.tukorea.ge.spgp2025.a2dg.framework.interfaces.IBoxCollidable;
 import kr.ac.tukorea.ge.spgp2025.a2dg.framework.objects.SheetSprite;
 import kr.ac.tukorea.ge.spgp2025.a2dg.framework.objects.Sprite;
+import kr.ac.tukorea.ge.spgp2025.a2dg.framework.scene.Scene;
 import kr.ac.tukorea.ge.spgp2025.a2dg.framework.util.RectUtil;
 import kr.ac.tukorea.ge.spgp2025.a2dg.framework.view.Camera;
+import kr.ac.tukorea.ge.spgp2025.a2dg.framework.view.GameView;
 import kr.ac.tukorea.ge.spgp2025.a2dg.framework.view.Metrics;
 
 public class Player extends SheetSprite implements IBoxCollidable {
     private static final String TAG = Player.class.getSimpleName();
 
     private RectF collisionRect = new RectF();
+    protected float time;
+    protected float interval;
+
     @Override
     public RectF getCollisionRect() {
         return collisionRect;
@@ -65,8 +70,16 @@ public class Player extends SheetSprite implements IBoxCollidable {
     @Override
     public void update() {
         RectUtil.setRect(dstRect, x, y, width, height);
+        time += GameView.frameTime;
+//        if (time > interval) {
+//            Weapon weapon
+//        }
         updateCollisionRect();
     }
+
+//    private void fireBullet() {
+//        Scene.top().add(MainScene.Layer.Weapon, Weapon);
+//    }
 
     private void updateCollisionRect() {
         float[] insets = edgeInsetRatios[state.ordinal()];
