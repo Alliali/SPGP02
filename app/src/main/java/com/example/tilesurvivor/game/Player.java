@@ -3,44 +3,25 @@ package com.example.tilesurvivor.game;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.util.Log;
-import android.view.MotionEvent;
 
 import com.example.tilesurvivor.R;
 
 import kr.ac.tukorea.ge.spgp2025.a2dg.framework.interfaces.IBoxCollidable;
 import kr.ac.tukorea.ge.spgp2025.a2dg.framework.objects.ScrollBackground;
 import kr.ac.tukorea.ge.spgp2025.a2dg.framework.objects.SheetSprite;
-import kr.ac.tukorea.ge.spgp2025.a2dg.framework.objects.Sprite;
 import kr.ac.tukorea.ge.spgp2025.a2dg.framework.scene.Scene;
 import kr.ac.tukorea.ge.spgp2025.a2dg.framework.util.RectUtil;
-import kr.ac.tukorea.ge.spgp2025.a2dg.framework.view.Camera;
 import kr.ac.tukorea.ge.spgp2025.a2dg.framework.view.GameView;
-import kr.ac.tukorea.ge.spgp2025.a2dg.framework.view.Metrics;
 
 public class Player extends SheetSprite implements IBoxCollidable {
     private static final String TAG = Player.class.getSimpleName();
+    private static final float FIRE_INTERVAL = 0.3f;
+    private float fireTime = 0f;
 
-    private RectF collisionRect = new RectF();
-    protected float time;
-    protected float interval;
 
-    @Override
-    public RectF getCollisionRect() {
-        return collisionRect;
-    }
-
-    public void setDirection(Direction direction) {
-        this.direction = direction;
-    }
-
-    public Direction getDirection() {
-        return direction;
-    }
-
-    public enum State {
-        idle, move, attack
-    }
+    public enum State {idle, move, attack}
     public enum Direction {LEFT, RIGHT, UP, DOWN}
+    private RectF collisionRect = new RectF();
     private Direction direction = Direction.RIGHT;
     protected State state = State.idle;
     protected static Rect[][] srcRectsArray = {
@@ -56,16 +37,25 @@ public class Player extends SheetSprite implements IBoxCollidable {
     };
     public Player() {
         super(R.mipmap.chesspieces2, 8);
-//        x = 1000.0f;
-//        y = 1000.0f;
         setPosition(x , y, 100, 100);
         Log.d(TAG, "이게 X = " + x + " 이게 Y = " + y);
         srcRects = srcRectsArray[state.ordinal()];
     }
 
+    @Override
+    public RectF getCollisionRect() {
+        return collisionRect;
+    }
     private void setState(State state) {
         this.state = state;
         updateCollisionRect();
+    }
+    public void setDirection(Direction direction) {
+        this.direction = direction;
+    }
+
+    public Direction getDirection() {
+        return direction;
     }
     public void moveScroll(ScrollBackground scrollBackground) {
         switch (direction) {
@@ -88,17 +78,18 @@ srcRects = srcRectsArray[state.ordinal()];
 
     @Override
     public void update() {
+        super.update();
+        fireTime += GameView.frameTime;
         RectUtil.setRect(dstRect, x, y, width, height);
-        time += GameView.frameTime;
-//        if (time > interval) {
-//            Weapon weapon
-//        }
         updateCollisionRect();
     }
 
-//    private void fireBullet() {
-//        Scene.top().add(MainScene.Layer.Weapon, Weapon);
-//    }
+    public void fire() {
+        if (fireTime < FIRE_INTERVAL) return;
+        fireTime = 0;
+        Weapon weapon = Weapon.get(getX(), getY(), direction);
+        Scene.top().add(MainScene.Layer.Weapon, weapon);
+    }
 
     private void updateCollisionRect() {
         float[] insets = edgeInsetRatios[state.ordinal()];

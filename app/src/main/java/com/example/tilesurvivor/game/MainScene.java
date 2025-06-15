@@ -63,7 +63,10 @@ public class MainScene extends Scene {
             player.moveScroll(bg);
             return false;
         }));
-        add(Layer.touch, new Button(R.mipmap.btn_attack, 750f, 1400f, 150f, 150f, pressed -> false));
+        add(Layer.touch, new Button(R.mipmap.btn_attack, 750f, 1400f, 150f, 150f, pressed -> {
+            player.fire();
+            return false;
+        }));
 
         //add(Layer.controller, new MapLoader(this));
     }
