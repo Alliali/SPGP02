@@ -13,7 +13,7 @@ public class Weapon extends Sprite implements IRecyclable {
     private static final float SPEED = 800f;
 
     public Weapon() {
-        super(R.mipmap.weapon_knight, 0, 0, RADIUS, RADIUS);
+        super(R.mipmap.weapon_rook, 0, 0, RADIUS, RADIUS);
     }
 
     public static Weapon get(float x, float y, Player.Direction direction) {
