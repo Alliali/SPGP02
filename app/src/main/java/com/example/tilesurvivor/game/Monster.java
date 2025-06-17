@@ -7,9 +7,12 @@ import com.example.tilesurvivor.R;
 import kr.ac.tukorea.ge.spgp2025.a2dg.framework.interfaces.IRecyclable;
 import kr.ac.tukorea.ge.spgp2025.a2dg.framework.objects.SheetSprite;
 import kr.ac.tukorea.ge.spgp2025.a2dg.framework.scene.Scene;
+import kr.ac.tukorea.ge.spgp2025.a2dg.framework.view.GameView;
+import kr.ac.tukorea.ge.spgp2025.a2dg.framework.view.Metrics;
 
 public class Monster extends SheetSprite implements IRecyclable {
     private static Rect[][] rects_array;
+    private float distance;
 
     @Override
     public void onRecycle() {
@@ -44,6 +47,17 @@ public class Monster extends SheetSprite implements IRecyclable {
 
     public Monster init(Type type) {
         srcRects = rects_array[type.ordinal()];
+        distance = 0;
         return this;
+    }
+
+    @Override
+    public void update() {
+        distance += 200 * GameView.frameTime;
+        if (distance > Metrics.width) {
+            Scene.top().remove(MainScene.Layer.enemy, this);
+            return;
+        }
+        setPosition(distance, y);
     }
 }

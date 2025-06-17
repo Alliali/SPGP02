@@ -35,7 +35,7 @@ public class WaveGen implements IGameObject {
         Monster.Type[] types = Monster.Type.values();
         Monster.Type type = types[rand.nextInt(types.length)];
         Monster monster = Monster.get(type);
-        monster.setPosition(x, y);
+        monster.setPosition(0, y);
         scene.add(MainScene.Layer.enemy, monster);
     }
 
