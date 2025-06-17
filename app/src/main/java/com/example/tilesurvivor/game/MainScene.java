@@ -1,17 +1,11 @@
 package com.example.tilesurvivor.game;
 
 import android.graphics.Canvas;
-import android.util.Log;
-import android.view.MotionEvent;
 
 import com.example.tilesurvivor.R;
 
-import java.util.Random;
-
 import kr.ac.tukorea.ge.spgp2025.a2dg.framework.objects.Button;
-import kr.ac.tukorea.ge.spgp2025.a2dg.framework.objects.HorzScrollBackground;
 import kr.ac.tukorea.ge.spgp2025.a2dg.framework.objects.ScrollBackground;
-import kr.ac.tukorea.ge.spgp2025.a2dg.framework.objects.Sprite;
 import kr.ac.tukorea.ge.spgp2025.a2dg.framework.scene.Scene;
 import kr.ac.tukorea.ge.spgp2025.a2dg.framework.view.Camera;
 import kr.ac.tukorea.ge.spgp2025.a2dg.framework.view.Metrics;
@@ -20,6 +14,11 @@ public class MainScene extends Scene {
 
     private static final String TAG = Player.class.getSimpleName();
     private final Player player;
+
+    public ScrollBackground getscrollBackground() {
+        return bg;
+    }
+
     private final ScrollBackground bg;
     private float left = 180.0f;
     private float right = 0.0f;

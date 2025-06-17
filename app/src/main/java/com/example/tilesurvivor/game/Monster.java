@@ -4,15 +4,18 @@ import android.graphics.Rect;
 
 import com.example.tilesurvivor.R;
 
+import java.util.ArrayList;
+
+import kr.ac.tukorea.ge.spgp2025.a2dg.framework.interfaces.IGameObject;
 import kr.ac.tukorea.ge.spgp2025.a2dg.framework.interfaces.IRecyclable;
+import kr.ac.tukorea.ge.spgp2025.a2dg.framework.objects.ScrollBackground;
 import kr.ac.tukorea.ge.spgp2025.a2dg.framework.objects.SheetSprite;
 import kr.ac.tukorea.ge.spgp2025.a2dg.framework.scene.Scene;
 import kr.ac.tukorea.ge.spgp2025.a2dg.framework.view.GameView;
-import kr.ac.tukorea.ge.spgp2025.a2dg.framework.view.Metrics;
 
 public class Monster extends SheetSprite implements IRecyclable {
+    private static final float SPEED = 50.0f;
     private static Rect[][] rects_array;
-    private float distance;
 
     @Override
     public void onRecycle() {
@@ -47,17 +50,35 @@ public class Monster extends SheetSprite implements IRecyclable {
 
     public Monster init(Type type) {
         srcRects = rects_array[type.ordinal()];
-        distance = 0;
+        dx = dy = 0;
         return this;
     }
 
     @Override
     public void update() {
-        distance += 200 * GameView.frameTime;
-        if (distance > Metrics.width) {
-            Scene.top().remove(MainScene.Layer.enemy, this);
-            return;
+        MainScene scene = (MainScene) Scene.top();
+        ArrayList<IGameObject> players = scene.objectsAt(MainScene.Layer.player);
+        for (IGameObject gameObject : players) {
+            Player player = (Player) gameObject;
+            float tx = player.getX();
+            float ty = player.getY();
+            float vx = tx - x;
+            float vy = ty - y;
+            float length = (float) Math.sqrt(vx * vx + vy * vy);
+            if (length != 0) {
+                dx = vx / length * SPEED;
+                dy = vy / length * SPEED;
+            }
+            x += dx * GameView.frameTime;
+            y += dy * GameView.frameTime;
         }
-        setPosition(distance, y);
+
+        ScrollBackground scrollBackground = scene.getscrollBackground();
+        float scrollDx = scrollBackground.getDeltaX();
+        float scrollDy = scrollBackground.getDeltaY();
+        x -= scrollDx;
+        y -= scrollDy;
+
+        setPosition(x, y);
     }
 }
