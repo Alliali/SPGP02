@@ -27,7 +27,7 @@ public class MainScene extends Scene {
     private float down = 270.0f;
 
     public enum Layer {
-        bg, player, enemy, ui, touch, Weapon, controller;
+        bg, player, enemy, touch, Weapon, controller;
         public static final int COUNT = values().length;
     }
     public MainScene() {
@@ -39,15 +39,7 @@ public class MainScene extends Scene {
 
         bg = new ScrollBackground(R.mipmap.tilemap);
         add(Layer.bg, bg);
-        Random random = new Random();
-        for (int i = 0; i < 6; i++) {
-            Monster.Type type = Monster.Type.values()[i];
-            Monster monster = new Monster(type);
-            float x = random.nextFloat() * Metrics.width;
-            float y = random.nextFloat() * Metrics.height;
-            monster.setPosition(x, y);
-            add(Layer.enemy, monster);
-        }
+        add(Layer.controller, new WaveGen(this, 1.0f));
 
         player = new Player();
         player.setPosition(450, 800, 100, 100);

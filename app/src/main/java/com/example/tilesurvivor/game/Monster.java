@@ -4,15 +4,22 @@ import android.graphics.Rect;
 
 import com.example.tilesurvivor.R;
 
+import kr.ac.tukorea.ge.spgp2025.a2dg.framework.interfaces.IRecyclable;
 import kr.ac.tukorea.ge.spgp2025.a2dg.framework.objects.SheetSprite;
+import kr.ac.tukorea.ge.spgp2025.a2dg.framework.scene.Scene;
 
-public class Monster extends SheetSprite {
+public class Monster extends SheetSprite implements IRecyclable {
     private static Rect[][] rects_array;
+
+    @Override
+    public void onRecycle() {
+
+    }
 
     public enum Type {
         pawn, king, knight, rook, bishop, queen
     }
-    public Monster(Type type) {
+    public Monster() {
         super(R.mipmap.monsterpieces, 1.0f);
         if (rects_array == null) {
             int type_count = Type.values().length;
@@ -29,6 +36,14 @@ public class Monster extends SheetSprite {
         }
 
         setPosition(0,0,100,100);
+    }
+
+    public static Monster get(Type type) {
+        return Scene.top().getRecyclable(Monster.class).init(type);
+    }
+
+    public Monster init(Type type) {
         srcRects = rects_array[type.ordinal()];
+        return this;
     }
 }
