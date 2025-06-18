@@ -11,6 +11,10 @@ public class ScrollBackground extends Sprite {
     private final Rect srcRect = new Rect();    // 원본 이미지에서 자를 부분
     private final RectF dstRect = new RectF();  // 화면에 그릴 위치
     private float deltaX, deltaY;
+    private float leftLimit = -358;
+    private float rightLimit = 1370;
+    private float topLimit = -726;
+    private float bottomLimit = 1002;
 
     public float getScrollX() {
         return scrollX;
@@ -33,11 +37,10 @@ public class ScrollBackground extends Sprite {
         targetX += dx;
         targetY += dy;
 
-        // 스크롤 범위 제한 (선택사항)
-//        if (scrollX < 0) scrollX = 0;
-//        if (scrollY < 0) scrollY = 0;
-//        if (scrollX > bitmap.getWidth() - Metrics.width) scrollX = bitmap.getWidth() - Metrics.width;
-//        if (scrollY > bitmap.getHeight() - Metrics.height) scrollY = bitmap.getHeight() - Metrics.height;
+        if (targetX < leftLimit) targetX = leftLimit;
+        if (targetY < topLimit) targetY = topLimit;
+        if (targetX > rightLimit) targetX = rightLimit;
+        if (targetY > bottomLimit) targetY = bottomLimit;
     }
 
     public float getDeltaX() {
