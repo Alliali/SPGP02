@@ -14,6 +14,7 @@ public class WaveGen implements IGameObject {
     private float time;
     private static final Random rand = new Random();
 
+
     public WaveGen(MainScene scene, float interval) {
         this.scene = scene;
         this.interval = interval;
@@ -30,30 +31,55 @@ public class WaveGen implements IGameObject {
     }
 
     private void spawn() {
-        float x = 0, y = 0;
-        int edge = rand.nextInt(4);
-        switch (edge) {
-            case 0: // 왼쪽
-                x = -100;
-                y = rand.nextFloat() * Metrics.height;
-                break;
-            case 1: // 오른쪽
-                x = Metrics.width + 100;
-                y = rand.nextFloat() * Metrics.height;
-                break;
-            case 2: // 위쪽
-                x = rand.nextFloat() * Metrics.width;
-                y = -100;
-                break;
-            case 3: // 아래쪽
-                x = rand.nextFloat() * Metrics.width;
-                y = Metrics.height + 100;
-                break;
+        float leftLimit = scene.getscrollBackground().getLeftLimit();
+        float rightLimit = scene.getscrollBackground().getRightLimit();
+        float topLimit = scene.getscrollBackground().getTopLimit();
+        float bottomLimit = scene.getscrollBackground().getBottomLimit();
+        float scrollDx = scene.getscrollBackground().getTargetX();
+        float scrollDy = scene.getscrollBackground().getTargetY();
+
+        float spawnX, spawnY;
+        Random random = new Random();
+        int edgePos = random.nextInt(4);
+        switch (edgePos) {
+            case 0: //상
+                if (scrollDx < 410) {
+                    spawnX = Metrics.width / 2 - (leftLimit - scrollDx);
+                } else {
+                    spawnX = Metrics.width / 2 - (rightLimit - scrollDx);
+                }
+                spawnY = Metrics.height / 2 + (topLimit - scrollDy); break;
+            case 1: //하
+                if (scrollDx < 410) {
+                    spawnX = Metrics.width / 2 - (leftLimit - scrollDx);
+                } else {
+                    spawnX = Metrics.width / 2 - (rightLimit - scrollDx);
+                }
+                spawnY = Metrics.height / 2 + (bottomLimit - scrollDy); break;
+            case 2: //좌
+                spawnX = Metrics.width / 2 + (leftLimit - scrollDx);
+                if (scrollDy < 170) {
+                    spawnY = Metrics.height / 2 - (topLimit - scrollDy);
+                    break;
+                } else {
+                    spawnY = Metrics.height / 2 - (bottomLimit - scrollDy);
+                    break;
+                }
+            case 3: //우
+                spawnX = Metrics.width / 2 + (rightLimit - scrollDx);
+                if (scrollDy < 170) {
+                    spawnY = Metrics.height / 2 - (topLimit - scrollDy);
+                    break;
+                } else {
+                    spawnY = Metrics.height / 2 - (bottomLimit - scrollDy);
+                    break;
+                }
+            default: spawnX = spawnY = 0; break;
         }
         Monster.Type[] types = Monster.Type.values();
         Monster.Type type = types[rand.nextInt(types.length)];
         Monster monster = Monster.get(type);
-        monster.setPosition(x, y);
+        monster.setPosition(spawnX, spawnY);
         scene.add(MainScene.Layer.enemy, monster);
     }
 

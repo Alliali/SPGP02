@@ -11,22 +11,33 @@ public class ScrollBackground extends Sprite {
     private final Rect srcRect = new Rect();    // 원본 이미지에서 자를 부분
     private final RectF dstRect = new RectF();  // 화면에 그릴 위치
     private float deltaX, deltaY;
-    private float leftLimit = -358;
-    private float rightLimit = 1370;
-    private float topLimit = -726;
-    private float bottomLimit = 1002;
 
-    public float getScrollX() {
-        return scrollX;
-    }
 
-    public float getScrollY() {
-        return scrollY;
-    }
-
+    private final float leftLimit = -358;
+    private final float rightLimit = 1370;
+    private final float topLimit = -726;
+    private final float bottomLimit = 1002;
     private float scrollX = 410, scrollY = 170;
     private float targetX = 410, targetY = 170;
     private final float scrollSpeed = 300.0f;
+    public float getLeftLimit() {
+        return leftLimit;
+    }
+    public float getRightLimit() {
+        return rightLimit;
+    }
+    public float getTopLimit() {
+        return topLimit;
+    }
+    public float getBottomLimit() {
+        return bottomLimit;
+    }
+    public float getTargetX() {
+        return targetX;
+    }
+    public float getTargetY() {
+        return targetY;
+    }
 
     public ScrollBackground(int bitmapResId) {
         super(bitmapResId);
