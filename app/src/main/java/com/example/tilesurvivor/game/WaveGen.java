@@ -13,7 +13,7 @@ public class WaveGen implements IGameObject {
     private final float interval;
     private float time;
     private static final Random rand = new Random();
-    private static final int spawnMax = 50;
+    private static final int spawnMax = 3;
     private int spawnCount = 0;
 
 
@@ -32,6 +32,12 @@ public class WaveGen implements IGameObject {
                 spawnCount += 1;
             }
             time -= interval;
+        }
+
+        int aliveMonsterCount = scene.objectsAt(MainScene.Layer.enemy).size();
+        if (spawnCount == spawnMax && aliveMonsterCount == 0) {
+            scene.remove(MainScene.Layer.controller, this);
+            new VictoryScene().push();
         }
     }
 
