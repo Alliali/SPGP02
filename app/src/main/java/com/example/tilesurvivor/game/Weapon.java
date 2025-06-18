@@ -51,8 +51,12 @@ public class Weapon extends Sprite implements IRecyclable {
             Monster monster = (Monster) monsters.get(index);
             boolean collides = CollisionHelper.collidesRadius(this, monster);
             if (collides) {
-                scene.remove(MainScene.Layer.enemy, monster);
                 scene.remove(MainScene.Layer.weapon, this);
+                boolean dead = monster.decreaseLife(20);
+                if (dead) {
+                    scene.remove(MainScene.Layer.enemy, monster);
+                }
+                break;
             }
         }
     }

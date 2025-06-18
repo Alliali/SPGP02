@@ -1,29 +1,44 @@
 package com.example.tilesurvivor.game;
 
+import android.graphics.Canvas;
 import android.graphics.Rect;
 
 import com.example.tilesurvivor.R;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import kr.ac.tukorea.ge.spgp2025.a2dg.framework.interfaces.IGameObject;
 import kr.ac.tukorea.ge.spgp2025.a2dg.framework.interfaces.IRecyclable;
 import kr.ac.tukorea.ge.spgp2025.a2dg.framework.objects.ScrollBackground;
 import kr.ac.tukorea.ge.spgp2025.a2dg.framework.objects.SheetSprite;
 import kr.ac.tukorea.ge.spgp2025.a2dg.framework.scene.Scene;
+import kr.ac.tukorea.ge.spgp2025.a2dg.framework.util.Gauge;
 import kr.ac.tukorea.ge.spgp2025.a2dg.framework.view.GameView;
 
 public class Monster extends SheetSprite implements IRecyclable {
     private static final float SPEED = 50.0f;
     private static Rect[][] rects_array;
+    private float life, maxLife;
+    private static final Random rand = new Random();
+    private static Gauge gauge;
 
     @Override
     public void onRecycle() {
 
     }
 
+    public boolean decreaseLife(float power) {
+        life -= power;
+        return life <= 0;
+    }
+
     public enum Type {
-        pawn, king, knight, rook, bishop, queen
+        pawn, king, knight, rook, bishop, queen;
+        float getMaxHealth() {
+            return HEALTHS[ordinal()];
+        }
+        static final float[] HEALTHS = {10, 80, 40, 50, 30, 100};
     }
     public Monster() {
         super(R.mipmap.monsterpieces, 1.0f);
@@ -51,6 +66,7 @@ public class Monster extends SheetSprite implements IRecyclable {
     public Monster init(Type type) {
         srcRects = rects_array[type.ordinal()];
         dx = dy = 0;
+        life = maxLife = type.getMaxHealth() * (0.9f + rand.nextFloat() * 0.2f);
         return this;
     }
 
@@ -80,5 +96,15 @@ public class Monster extends SheetSprite implements IRecyclable {
         y -= scrollDy;
 
         setPosition(x, y);
+    }
+
+    @Override
+    public void draw(Canvas canvas) {
+        super.draw(canvas);
+        float barSize = width * 2 / 3;
+        if (gauge == null) {
+            gauge = new Gauge(0.2f, R.color.mon_health_fg, R.color.mon_health_bg);
+        }
+        gauge.draw(canvas, x - barSize / 2, y + barSize / 2, barSize, life / maxLife);
     }
 }
