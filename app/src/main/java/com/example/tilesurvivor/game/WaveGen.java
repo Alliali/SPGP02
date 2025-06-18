@@ -13,6 +13,8 @@ public class WaveGen implements IGameObject {
     private final float interval;
     private float time;
     private static final Random rand = new Random();
+    private static final int spawnMax = 50;
+    private int spawnCount = 0;
 
 
     public WaveGen(MainScene scene, float interval) {
@@ -25,7 +27,10 @@ public class WaveGen implements IGameObject {
     public void update() {
         time += GameView.frameTime;
         if (time >= interval) {
-            spawn();
+            if (spawnMax > spawnCount) {
+                spawn();
+                spawnCount += 1;
+            }
             time -= interval;
         }
     }
