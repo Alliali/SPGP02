@@ -26,4 +26,8 @@ public class CollisionHelper {
         double sum_sq = sum_of_two_radii * sum_of_two_radii;
         return dist_sq < sum_sq;
     }
+
+    public static boolean collidesprite(IBoxCollidable obj, Sprite sprite) {
+        return collides(obj.getCollisionRect(), sprite.getDstRect());
+    }
 }

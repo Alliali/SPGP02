@@ -1,12 +1,10 @@
 package com.example.tilesurvivor.game;
 
 import com.example.tilesurvivor.R;
-import com.example.tilesurvivor.app.MainActivity;
 
 import kr.ac.tukorea.ge.spgp2025.a2dg.framework.objects.Button;
 import kr.ac.tukorea.ge.spgp2025.a2dg.framework.objects.Sprite;
 import kr.ac.tukorea.ge.spgp2025.a2dg.framework.scene.Scene;
-import kr.ac.tukorea.ge.spgp2025.a2dg.framework.view.GameView;
 import kr.ac.tukorea.ge.spgp2025.a2dg.framework.view.Metrics;
 
 public class VictoryScene extends Scene {

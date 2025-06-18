@@ -1,23 +1,31 @@
 package com.example.tilesurvivor.game;
 
+import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import android.util.Log;
 
 import com.example.tilesurvivor.R;
 
+import java.util.ArrayList;
+
 import kr.ac.tukorea.ge.spgp2025.a2dg.framework.interfaces.IBoxCollidable;
+import kr.ac.tukorea.ge.spgp2025.a2dg.framework.interfaces.IGameObject;
 import kr.ac.tukorea.ge.spgp2025.a2dg.framework.objects.ScrollBackground;
 import kr.ac.tukorea.ge.spgp2025.a2dg.framework.objects.SheetSprite;
 import kr.ac.tukorea.ge.spgp2025.a2dg.framework.scene.Scene;
+import kr.ac.tukorea.ge.spgp2025.a2dg.framework.util.CollisionHelper;
+import kr.ac.tukorea.ge.spgp2025.a2dg.framework.util.Gauge;
 import kr.ac.tukorea.ge.spgp2025.a2dg.framework.util.RectUtil;
 import kr.ac.tukorea.ge.spgp2025.a2dg.framework.view.GameView;
 
 public class Player extends SheetSprite implements IBoxCollidable {
     private static final String TAG = Player.class.getSimpleName();
     private static final float FIRE_INTERVAL = 0.3f;
+    private static final float HIT_INTERVAL = 1.0f;
     private float fireTime = 0f;
-
+    private float life, maxLife;
+    private static Gauge gauge;
+    private float hitTime = 0f;
 
     public enum State {idle, move, attack}
     public enum Direction {LEFT, RIGHT, UP, DOWN}
@@ -38,7 +46,7 @@ public class Player extends SheetSprite implements IBoxCollidable {
     public Player() {
         super(R.mipmap.chesspieces2, 8);
         setPosition(x , y, 100, 100);
-        Log.d(TAG, "이게 X = " + x + " 이게 Y = " + y);
+        life = maxLife = 100;
         srcRects = srcRectsArray[state.ordinal()];
     }
 
@@ -56,6 +64,11 @@ public class Player extends SheetSprite implements IBoxCollidable {
 
     public Direction getDirection() {
         return direction;
+    }
+
+    public boolean decreaseLife(float power) {
+        life -= power;
+        return life <= 0;
     }
     public void moveScroll(ScrollBackground scrollBackground) {
         switch (direction) {
@@ -79,9 +92,37 @@ srcRects = srcRectsArray[state.ordinal()];
     @Override
     public void update() {
         super.update();
+        Scene scene = Scene.top();
         fireTime += GameView.frameTime;
+        hitTime -= GameView.frameTime;
         RectUtil.setRect(dstRect, x, y, width, height);
         updateCollisionRect();
+
+        ArrayList<IGameObject> monsters = scene.objectsAt(MainScene.Layer.enemy);
+        for (int index = monsters.size() - 1; index >= 0; index--) {
+            IGameObject gobj = monsters.get(index);
+            Monster monster = (Monster) gobj;
+            boolean collides = CollisionHelper.collidesprite(this, monster );
+            if (collides) {
+                if (hitTime <= 0) {
+                    boolean dead = this.decreaseLife(20);
+                    if (dead) {
+                        new VictoryScene().push();
+                    }
+                    hitTime = HIT_INTERVAL;
+                }
+            }
+        }
+    }
+
+    @Override
+    public void draw(Canvas canvas) {
+        super.draw(canvas);
+        float barSize = width * 2 / 3;
+        if (gauge == null) {
+            gauge = new Gauge(0.2f, R.color.player_health_fg, R.color.mon_health_bg);
+        }
+        gauge.draw(canvas, x - barSize / 2, y + barSize / 2, barSize, life / maxLife);
     }
 
     public void fire() {

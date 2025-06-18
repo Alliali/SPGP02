@@ -4,4 +4,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="mon_health_fg">#F44336</color>
     <color name="mon_health_bg">#646464</color>
+    <color name="player_health_fg">#1FF306</color>
 </resources>
