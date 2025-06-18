@@ -68,8 +68,6 @@ public class MainScene extends Scene {
             player.fire();
             return false;
         }));
-
-        //add(Layer.controller, new MapLoader(this));
     }
 
     @Override

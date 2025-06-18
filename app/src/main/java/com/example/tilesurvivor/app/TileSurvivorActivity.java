@@ -14,7 +14,7 @@ public class TileSurvivorActivity extends GameActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        GameView.drawsDebugStuffs = BuildConfig.DEBUG;
+        //GameView.drawsDebugStuffs = BuildConfig.DEBUG;
         Metrics.setGameSize(900, 1600);
         super.onCreate(savedInstanceState);
 

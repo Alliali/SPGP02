@@ -137,6 +137,7 @@ public class Scene {
         }
     }
     public void draw(Canvas canvas) {
+        canvas.drawColor(Color.BLACK);
         if (this.clipsRect()) {
             canvas.clipRect(0, 0, Metrics.width, Metrics.height);
         }
