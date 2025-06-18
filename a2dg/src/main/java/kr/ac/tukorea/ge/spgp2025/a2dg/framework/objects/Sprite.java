@@ -19,7 +19,11 @@ public class Sprite implements IGameObject {
     protected Rect srcRect = null;
     protected final RectF dstRect = new RectF();
     protected float x, y, dx, dy;
-    protected float width, height, radius;
+    protected float width;
+    protected float height;
+
+
+    protected float radius;
 
     public Sprite(int mipmapId) {
         if (mipmapId != 0) {
@@ -67,6 +71,9 @@ public class Sprite implements IGameObject {
     }
     public float getY() {
         return y;
+    }
+    public float getRadius() {
+        return radius;
     }
     public float getPropotionalHeight(float width) {
         return width / bitmap.getWidth() * bitmap.getHeight();

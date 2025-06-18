@@ -2,9 +2,13 @@ package com.example.tilesurvivor.game;
 
 import com.example.tilesurvivor.R;
 
+import java.util.ArrayList;
+
+import kr.ac.tukorea.ge.spgp2025.a2dg.framework.interfaces.IGameObject;
 import kr.ac.tukorea.ge.spgp2025.a2dg.framework.interfaces.IRecyclable;
 import kr.ac.tukorea.ge.spgp2025.a2dg.framework.objects.Sprite;
 import kr.ac.tukorea.ge.spgp2025.a2dg.framework.scene.Scene;
+import kr.ac.tukorea.ge.spgp2025.a2dg.framework.util.CollisionHelper;
 import kr.ac.tukorea.ge.spgp2025.a2dg.framework.view.GameView;
 import kr.ac.tukorea.ge.spgp2025.a2dg.framework.view.Metrics;
 
@@ -34,10 +38,22 @@ public class Weapon extends Sprite implements IRecyclable {
     @Override
     public void update() {
         super.update();
+        Scene scene = Scene.top();
         x += dx * GameView.frameTime;
         y += dy * GameView.frameTime;
         if (x < -RADIUS || x > Metrics.width + RADIUS || y < -RADIUS || y > Metrics.height + RADIUS) {
-            Scene.top().remove(MainScene.Layer.Weapon, this);
+            scene.remove(MainScene.Layer.weapon, this);
+            return;
+        }
+
+        ArrayList<IGameObject> monsters = scene.objectsAt(MainScene.Layer.enemy);
+        for (int index = monsters.size() - 1; index >= 0; index--) {
+            Monster monster = (Monster) monsters.get(index);
+            boolean collides = CollisionHelper.collidesRadius(this, monster);
+            if (collides) {
+                scene.remove(MainScene.Layer.enemy, monster);
+                scene.remove(MainScene.Layer.weapon, this);
+            }
         }
     }
 

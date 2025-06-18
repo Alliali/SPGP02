@@ -88,7 +88,7 @@ srcRects = srcRectsArray[state.ordinal()];
         if (fireTime < FIRE_INTERVAL) return;
         fireTime = 0;
         Weapon weapon = Weapon.get(getX(), getY(), direction);
-        Scene.top().add(MainScene.Layer.Weapon, weapon);
+        Scene.top().add(MainScene.Layer.weapon, weapon);
     }
 
     private void updateCollisionRect() {

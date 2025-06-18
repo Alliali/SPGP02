@@ -26,7 +26,7 @@ public class MainScene extends Scene {
     private float down = 270.0f;
 
     public enum Layer {
-        bg, player, enemy, touch, Weapon, controller;
+        bg, player, enemy, touch, weapon, controller;
         public static final int COUNT = values().length;
     }
     public MainScene() {
